@@ -1,0 +1,69 @@
+version: '3.1'
+services:
+  kayaspring:
+    image: fkbeys/kayaspring:latest
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=db
+      - DATABASE_USER=user
+      - DATABASE_PASSWORD=password
+
+  db:
+    image: postgres:13
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=db
+    restart: always
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: always
+
+volumes:
+  postgresql-data:
+  redis-data:
+
+
+#version: '3.1'
+#services:
+#  kayaspring:
+#    image: fkbeys/kayaspring:latest
+#    ports:
+#      - 8080:8080
+#    depends_on:
+#      - db
+#    environment:
+#      - DATABASE_HOST=db
+#      - DATABASE_PORT=5432
+#      - DATABASE_NAME=kayaspringdb
+#      - DATABASE_USER=user
+#      - DATABASE_PASSWORD=password
+#
+#  db:
+#    image: postgres:13
+#    restart: always
+#    environment:
+#      POSTGRES_PASSWORD: password
+#      POSTGRES_USER: user
+#      POSTGRES_DB: kayaspringdb
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data
+#
+#volumes:
+#  postgres_data:

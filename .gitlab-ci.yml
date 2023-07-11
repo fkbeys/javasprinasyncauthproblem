@@ -1,0 +1,32 @@
+image: docker:latest
+services:
+  - docker:dind
+
+stages:
+  - build
+  - deploy
+
+variables:
+  DOCKER_DRIVER: overlay2
+
+maven_build:
+  image: maven:latest
+  stage: build
+  script:
+    - mvn clean package -DskipTests
+  artifacts:
+    paths:
+      - target/kayaspring-0.0.2-SNAPSHOT.jar
+
+docker_build:
+  stage: deploy
+  script:
+    - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+    - docker build -t fkbeys/kayaspring:0.0.2 -t fkbeys/kayaspring:latest .
+    - docker push fkbeys/kayaspring:0.0.2
+    - docker push fkbeys/kayaspring:latest
+    - docker-compose up -d
+  only:
+    - master
+
+
