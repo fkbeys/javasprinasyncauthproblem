@@ -11,12 +11,12 @@ import java.util.concurrent.CompletableFuture;
 
 @CrossOrigin
 @RestController
-@RequestMapping("api/categories")
-public class CategoriesController {
+@RequestMapping("api/Home")
+public class HomeController {
 
     private final CategoryService service;
 
-    public CategoriesController(CategoryService service) {
+    public HomeController(CategoryService service) {
         this.service = service;
     }
 
